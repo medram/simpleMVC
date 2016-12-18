@@ -2,9 +2,11 @@
 
 class Database
 {
-	public function __construct ()
+	public $info = 'this is info !';
+	public function __construct ($data)
 	{
-		echo 'database loaded';
+		$this->username = $data['username'];
+		echo $data['username'].' '.$data['email'].' database loaded !!';
 	}
 }
 

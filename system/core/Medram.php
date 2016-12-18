@@ -14,7 +14,7 @@ class Medram
 		// include pricipal files
 		require_once BASEPATH.'core/constants'.EXT;
 		require_once BASEPATH.'core/functions'.EXT;
-		require_once BASEPATH.'core/config'.EXT;
+		require_once BASEPATH.'core/Model.php';
 
 		/**
 		* ----------------------------------------------------
@@ -23,6 +23,13 @@ class Medram
 		*/
 		set_environment();
 
+		/**
+		* ----------------------------------------------------
+		* set a custom error here 
+		* ----------------------------------------------------
+		*/
+		set_error_handler('custom_err');
+
 		/** 
 		* ----------------------------------------------------
 		* load classes and activate it
@@ -30,12 +37,10 @@ class Medram
 		*/
 		//$MR_Loader 	=& load_class('Loader','core');
 		$MR_Router 	=& load_class('Router','core');
+		//$MR_Model =& load_class('Model','core');
 
 		// load MR_Controller
 		$MR_Controller =& load_class('Controller','core');
-
-
-
 
 		// show the page (activate the controller and methods)
 		$MR_Router->active_route();
@@ -46,6 +51,7 @@ class Medram
 		print_r(loaded_classes());
 		echo '</pre>';
 		*/
+
 	}
 
 

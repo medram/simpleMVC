@@ -7,8 +7,6 @@
 	<body>
 		<h1>Hello my name is <?php echo $username; ?></h1>
 		<?php
-		$db = new Database();
-		$s = new Session();
 
 		?>
 	</body>

@@ -125,9 +125,138 @@ function loaded_classes($class = array())
 
 }
 
-function config_item()
+if ( ! function_exists("custom_err"))
 {
+	//set_error_handler('custom_err');
+	function custom_err ($errno,$errMsg,$errFile,$errLine)
+	{
+		// define('ENVIRONMENT','development');
+		if (ENVIRONMENT == 'development')
+		{
+			echo '<br><pre>';
+			echo '<b>Error type: </b>'.mapErrorCode($errno).'<br>';
+			echo '<b>Error massage:</b> '.$errMsg.'<br>';
+			echo '<b>File:</b> '.$errFile.'</b><br>';
+			echo '<b>line:</b> '.$errLine.'<br></pre><br>';
+			//die();
+		}
+	}
 
+
+
+}
+
+function mapErrorCode($code) {
+    $error = $log = null;
+    switch ($code) {
+        case E_PARSE:
+        case E_ERROR:
+        case E_CORE_ERROR:
+        case E_COMPILE_ERROR:
+        case E_USER_ERROR:
+            $error = 'Fatal Error';
+            $log = LOG_ERR;
+            break;
+        case E_WARNING:
+        case E_USER_WARNING:
+        case E_COMPILE_WARNING:
+        case E_RECOVERABLE_ERROR:
+            $error = 'Warning';
+            $log = LOG_WARNING;
+            break;
+        case E_NOTICE:
+        case E_USER_NOTICE:
+            $error = 'Notice';
+            $log = LOG_NOTICE;
+            break;
+        case E_STRICT:
+            $error = 'Strict';
+            $log = LOG_NOTICE;
+            break;
+        case E_DEPRECATED:
+        case E_USER_DEPRECATED:
+            $error = 'Deprecated';
+            $log = LOG_NOTICE;
+            break;
+        default :
+            break;
+    }
+    return $error;
+}
+
+function log_error($msg,$kill=true)
+{
+	echo $msg;
+	if ($kill)
+	{
+		die() or exit();
+	}
+}
+
+function &get_config ()
+{
+	static $_config;
+	
+	if (! empty($_config) && isset($_config[0]))
+	{
+		return $_config[0];
+	}
+
+	//$path = BASEPATH.'core/config'.EXT;
+	$path = APPPATH.'config/config'.EXT;
+
+	// check if the config file exists
+	if ( ! file_exists($path))
+	{
+		log_error('the config file not found on '.$path);
+	}
+	else
+	{
+		// load the config file
+		require_once $path;
+		
+		// check if the config var exists
+		if ( ! isset($config) || ! is_array($config))
+		{
+			log_error('the config var is not found or isn\'t an array on the folder');
+		}
+		else
+		{
+			$_config[0] = $config;
+			return $_config[0];
+		}
+	}
+}
+
+/**
+* get the config data from the config folder
+* @param string $item : the item want be got it 
+* @return if the item exists the function return to the value or the item else return an array of     *         config
+*/
+function config_item ($item = null)
+{
+	static $all_config = array();
+	/*
+	echo '<pre>';
+	print_r($all_config);
+	echo '</pre>';
+	*/
+
+	if (empty($all_config))
+	{
+		$all_config[0] =& get_config();
+	}
+
+	// check if the item exists
+	if ($item != null)
+	{
+		return isset($all_config[0][$item])? $all_config[0][$item] : null;
+	}
+	else
+	{
+		// return config data array if the item was null
+		return (array) $all_config[0];
+	}
 }
 
 

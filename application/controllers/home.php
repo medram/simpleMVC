@@ -25,6 +25,8 @@ class Home extends MR_Controller
 		$data2['email'] = 'nabil@gmail.com';
 
 		
+		$d['username'] = 'MOHAMMED';
+		$this->load->view('homde',$d);
 		
 		$db = $this->load->library('database',$data);
 		$db2 = $this->load->library('database',$data2);
@@ -41,8 +43,6 @@ class Home extends MR_Controller
 		//$this->session->set_userdata(array('username','email'));
 		$this->load->library('session');
 
-		$d['username'] = 'MOHAMMED';
-		$this->load->view('home',$d);
 	}
 }
 

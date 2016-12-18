@@ -106,6 +106,11 @@ class MR_Loader
 	{
 		$path = APPPATH.'views'.DS.$tpl.EXT;
 		
+		if (! file_exists($path))
+		{
+			exit('ERROR: the file not found');
+		}
+
 		// create variables to view template
 		if (is_array($data) && count($data) > 0)
 		{
